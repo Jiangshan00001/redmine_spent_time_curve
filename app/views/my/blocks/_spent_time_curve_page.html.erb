@@ -1,0 +1,18 @@
+<% content_for :header_tags do %>
+  <%= stylesheet_link_tag 'style', :plugin => 'redmine_spent_time_curve' %>
+<% end %>
+
+<%= render :partial => 'my/blocks/spent_time_curve_part' %>
+
+<script type="text/javascript">
+//<![CDATA[
+jQuery(function(){
+  var base_url = "<%= url_for(:controller => 'spent_time_curve', :action => 'update') %>";
+  $('#spent_time_curve_page').on('click', 'a.select-link', function(event) {
+    event.preventDefault();
+    var url = base_url + "?period=" + $(this).data('period');
+    $('#spent_time_curve_page').load(url);
+  });
+});
+//]]>
+</script>

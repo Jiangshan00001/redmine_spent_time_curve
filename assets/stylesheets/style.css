@@ -1,0 +1,26 @@
+.clearfix:after {content:"\0020";display:block;height:0;clear:both;visibility:hidden;overflow:hidden;}
+.clearfix {display:block;}
+
+h3 span.select-link-label{
+	color:#888;
+	font-size:11px;
+	font-weight:normal;
+}
+h3 a.select-link{
+	font-size:11px;
+	font-weight:normal;
+	padding:1px 8px;
+}
+h3 a.select-link.current{
+	border:1px solid #bbb;
+	background-color:#eee;
+	-webkit-border-radius:10px;
+	   -moz-border-radius:10px;
+	     -o-border-radius:10px;
+	        border-radius:10px;
+	text-shadow: 0 1px 0 #fff;
+	box-shadow:0 0 2px rgba(0,0,0,.15) inset;
+}
+h3 .spent-time-options-container{
+	float:right;
+}

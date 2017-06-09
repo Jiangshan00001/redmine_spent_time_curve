@@ -1,2 +1,12 @@
-# redmine_spent_time_curve
-draw current user spent time in my page. one day, one point. draw 7-30days.
+Redmine plugin: redmine_spend_time_curve
+===================================
+Redmine plugin used to draw spent time visualisation in "my page".
+
+Released under the MIT license.
+
+![Plugin illustration](https://github.com/pertimm/redmine_extended_spent_time/raw/master/illustration.png)
+
+this plugin is changed from plugin:
+extended_spent_time
+![Plugin illustration](https://github.com/pertimm/redmine_extended_spent_time/raw/master/illustration.png)
+

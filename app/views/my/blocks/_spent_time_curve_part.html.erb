@@ -1,0 +1,59 @@
+<div id="spent_time_curve_page">
+<%
+if @user.pref.others[:spent_time_period].nil?
+  period = 21
+else
+  period = @user.pref.others[:spent_time_period].to_i
+end
+sql_period = period - 1
+%>
+<%# this is a comment: select  display options %>
+<h3 class="clearfix">
+  <%=l(:label_spent_time)%> (<%= l(:label_last_n_days, period) %>)
+  <div class="spent-time-options-container">
+    <span class="select-link-label"><%= l(:label_extended_spent_time_options) %></span>
+    <a href="#" data-period="7" class="select-link <%= 'current' if period == 7 %>">
+      1 <%= l(:label_extended_spent_time_week) %></a>
+    <a href="#" data-period="14" class="select-link <%= 'current' if period == 14 %>">
+      2 <%= l(:label_extended_spent_time_weeks) %></a>
+    <a href="#" data-period="21" class="select-link <%= 'current' if period == 21 %>">
+      3 <%= l(:label_extended_spent_time_weeks) %></a>
+    <a href="#" data-period="28" class="select-link <%= 'current' if period == 28 %>">
+      4 <%= l(:label_extended_spent_time_weeks) %></a>
+    <a href="#" data-period="35" class="select-link <%= 'current' if period == 35 %>">
+      5 <%= l(:label_extended_spent_time_weeks) %></a>
+  </div>
+</h3>
+
+<%# collecting data here %>
+<%
+entries = TimeEntry.joins(:activity, :project, {:issue => [:tracker, :status]})
+  .where("#{TimeEntry.table_name}.user_id = ? AND #{TimeEntry.table_name}.spent_on BETWEEN ? AND ?", @user.id, Date.today - sql_period, Date.today)
+  .order("#{TimeEntry.table_name}.spent_on DESC, #{Project.table_name}.name ASC, #{Tracker.table_name}.position ASC, #{Issue.table_name}.id ASC")
+entries_by_day = entries.group_by(&:spent_on)
+%>
+
+<%# add total hour display %>
+<div class="total-hours">
+<p><%= l(:label_total) %>: <%= html_hours("%.2f" % entries.sum(:hours).to_f) %></p>
+</div>
+
+<% if entries.any? %>
+<table class="list time-entries">
+<thead><tr>
+<th><%= l(:label_extended_spent_time_date) %></th>
+<th><%= l(:field_hours) %></th>
+<th></th>
+</tr></thead>
+<tbody>
+<% entries_by_day.keys.sort.reverse.each do |day| %>
+    <tr class="odd">
+    <td><strong><%= day == Date.today ? l(:label_today).titleize : format_date(day) %></strong></td>
+    <td class="hours"><em><%= html_hours("%.2f" % entries_by_day[day].sum(&:hours).to_f) %></em></td>
+    <td></td>
+    </tr>
+<% end -%>
+</tbody>
+</table>
+<% end %>
+</div>
